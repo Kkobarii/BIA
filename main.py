@@ -1,3 +1,4 @@
+from algorithm.BlindSearch import BlindSearch
 from function.Ackley import Ackley
 from function.Griewank import Griewank
 from function.Levy import Levy
@@ -25,4 +26,9 @@ if __name__ == '__main__':
 
     # Plot the Sphere function using the Graph class
     for function in functions:
-        Graph.plot_function(function)
+        algorithm = BlindSearch(100, 10, function)
+        algorithm.search()
+
+        # Graph.plot_function(function)
+        # Graph.plot_algorithm(algorithm)
+        Graph.animate_algorithm(algorithm)
