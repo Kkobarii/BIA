@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
 
+from algorithm.Algorithm import Algorithm
 from algorithm.BlindSearch import BlindSearch
 from function.Function import Function
 
@@ -12,6 +13,9 @@ if INTERACTIVE:
 
 
 class Graph:
+    def __init__(self):
+        self.points = None
+
     @staticmethod
     def plot_function_3d(x, y, z, cmap='jet_r', alpha=0.8):
         # Plot the results
@@ -67,11 +71,11 @@ class Graph:
         plt.show()
 
     @staticmethod
-    def plot_point(point, color='bo', alpha=1.0):
+    def plot_point(ax, point, color='blue', alpha=1.0):
         x, y = point[0]
         z = point[1]
 
-        return plt.plot(x, y, z, color, alpha=alpha)
+        return ax.scatter([x], [y], [z], color=color, alpha=alpha)
 
     @staticmethod
     def plot_algorithm(algorithm_instance: 'BlindSearch'):
@@ -92,27 +96,41 @@ class Graph:
         plt.title(f'{algorithm_instance.function.get_name()} - {algorithm_instance.get_name()} Plot')
         plt.show()
 
-    @staticmethod
-    def animate_algorithm(algorithm_instance: 'BlindSearch'):
+    def animate_algorithm(self, algorithm_instance: 'Algorithm'):
         x, y, z = Graph.get_function_values(algorithm_instance.function)
 
-        fig, ax = Graph.plot_function_3d(x, y, z, cmap='Greys', alpha=0.1)
+        fig, ax = Graph.plot_function_3d(x, y, z, cmap='Greys', alpha=0.3)
 
-        path = algorithm_instance.path
+        plt.get_current_fig_manager().full_screen_toggle()
+
+        if algorithm_instance.get_path() is None:
+            return
+
+        path = algorithm_instance.get_path()
+        self.points = []
 
         def update(frame):
             current_point = path[frame]
 
             if frame == 0:
-                Graph.plot_point(current_point[1], 'go')
+                pt = Graph.plot_point(ax, current_point[1], 'red')
+                self.points.append(pt)
+            if frame == len(path) - 1:
+                pt = Graph.plot_point(ax, current_point[1], 'green')
+                pt.set_sizes([1000])
+                self.points.append(pt)
             elif current_point[0]:
-                last_best = next((point for point in path[:frame][::-1] if point[0]), None)
-
-                if last_best:
-                    Graph.plot_point(last_best[1], 'ko')
-                Graph.plot_point(current_point[1], 'go')
+                # recolor all previous points
+                for point in self.points:
+                    point.set_color('black')
+                    point.set_alpha(0.7)
+                # plot the new point
+                pt = Graph.plot_point(ax, current_point[1], 'red')
+                self.points.append(pt)
             else:
-                Graph.plot_point(current_point[1], 'ko', 0.3)
+                # plot the new point
+                pt = Graph.plot_point(ax, current_point[1], 'black', 0.7)
+                self.points.append(pt)
 
         # calculate interval so that the animation is 5 seconds long
         interval = 5000 / len(path)

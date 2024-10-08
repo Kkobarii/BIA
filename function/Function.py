@@ -18,5 +18,11 @@ class Function:
         return np.random.uniform(self.specification.lower, self.specification.upper,
                                  (size, self.specification.dimension))
 
+    def random_population_around_point(self, point: np.ndarray, size: int, distance: int) -> np.ndarray:
+        return np.random.uniform(point - distance, point + distance, (size, self.specification.dimension))
+
+    def random_point(self) -> np.ndarray:
+        return np.random.uniform(self.specification.lower, self.specification.upper, self.specification.dimension)
+
     def get_name(self) -> str:
         return self.__class__.__name__

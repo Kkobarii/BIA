@@ -2,12 +2,14 @@ from time import sleep
 
 import numpy as np
 
+from algorithm.Algorithm import Algorithm
 
-class BlindSearch:
+
+class BlindSearch(Algorithm):
     def __init__(self, generations, population_size, function):
+        super().__init__(function)
         self.generations = generations
         self.population_size = population_size
-        self.function = function
         self.path = []
         self.current_generation = 0
         self.current_best = None
@@ -40,14 +42,11 @@ class BlindSearch:
         current_result = (better, best)
         self.path.append(current_result)
 
-        # print(f'Generation {self.current_generation}: {best[0]} -> {best[1]}')
-
         if better:
             self.current_best = best
-            # print(f'New best!')
 
         self.current_generation += 1
         return current_result
 
-    def get_name(self) -> str:
-        return self.__class__.__name__
+    def get_path(self):
+        return self.path
