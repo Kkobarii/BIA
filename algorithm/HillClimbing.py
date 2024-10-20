@@ -35,7 +35,7 @@ class HillClimbing(Algorithm):
             return self.current_best
 
         # get a random neighbour
-        for point in self.function.random_population_around_point(self.current_best[0], 100, self.step_size):
+        for point in self.function.random_normal_population_around_point(self.current_best[0], 100, self.step_size):
             cost = self.function.evaluate(point)
             if cost < self.current_best[1]:
                 self.current_best = (point, cost)

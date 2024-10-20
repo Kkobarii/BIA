@@ -1,5 +1,6 @@
 from algorithm.BlindSearch import BlindSearch
 from algorithm.HillClimbing import HillClimbing
+from algorithm.SimulatedAnnealing import SimulatedAnnealing
 from function.Ackley import Ackley
 from function.Griewank import Griewank
 from function.Levy import Levy
@@ -15,20 +16,21 @@ if __name__ == '__main__':
     # Create an instance of the Sphere function
     functions = [
         Sphere(),
-        # Ackley(),
-        # Rastrigin(),
-        # Rosenbrock(),
-        # Griewank(),
-        # Schwefel(),
-        # Levy(),
-        # Michalewicz(),
-        # Zakharov(),
+        Ackley(),
+        Rastrigin(),
+        Rosenbrock(),
+        Griewank(),
+        Schwefel(),
+        Levy(),
+        Michalewicz(),
+        Zakharov(),
     ]
     graph = Graph()
 
     # Plot the Sphere function using the Graph class
     for function in functions:
         # algorithm = BlindSearch(100, 10, function)
+        # algorithm = SimulatedAnnealing(function)
         algorithm = HillClimbing(100, function)
         algorithm.search()
 
