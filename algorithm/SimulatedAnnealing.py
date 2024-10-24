@@ -43,6 +43,8 @@ class SimulatedAnnealing(Algorithm):
             if self.acceptance_probability(delta, self.temperature) > r:
                 self.current_best = (new_point, new_cost)
                 self.path.append((True, self.current_best))
+            else:
+                self.path.append((False, (new_point, new_cost)))
 
         self.temperature = self.temperature * self.cooling_rate
         return self.current_best

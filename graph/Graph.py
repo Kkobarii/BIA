@@ -119,7 +119,7 @@ class Graph:
                         if point[1][1] < best[1]:
                             best = point[1]
                     pt = Graph.plot_point(ax, best, 'blue')
-                    pt.set_sizes([1000])
+                    pt.set_sizes([500])
                     self.points.append(pt)
 
                 # plot the result
