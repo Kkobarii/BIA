@@ -15,15 +15,15 @@ from graph.Graph import Graph
 if __name__ == '__main__':
     # Create an instance of the Sphere function
     functions = [
-        Sphere(),
-        Ackley(),
+        # Sphere(),
+        # Ackley(),
         # Rastrigin(),
         # Rosenbrock(),
-        # Griewank(),
-        Schwefel(),
+        Griewank(),
+        # Schwefel(),
         # Levy(),
         # Michalewicz(),
-        Zakharov(),
+        # Zakharov(),
     ]
     graph = Graph()
 
