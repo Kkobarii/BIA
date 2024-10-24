@@ -18,22 +18,22 @@ if __name__ == '__main__':
         Sphere(),
         Ackley(),
         Rastrigin(),
-        Rosenbrock(),
-        Griewank(),
+        # Rosenbrock(),
+        # Griewank(),
         Schwefel(),
         Levy(),
-        Michalewicz(),
-        Zakharov(),
+        # Michalewicz(),
+        # Zakharov(),
     ]
     graph = Graph()
 
     # Plot the Sphere function using the Graph class
     for function in functions:
-        # algorithm = BlindSearch(100, 10, function)
-        # algorithm = SimulatedAnnealing(function)
+        # algorithm = BlindSearch(20, 10, function)
         algorithm = HillClimbing(100, function)
+        # algorithm = SimulatedAnnealing(function)
         algorithm.search()
 
         # Graph.plot_function(function)
         # Graph.plot_algorithm(algorithm)
-        graph.animate_algorithm(algorithm)
+        graph.animate_algorithm(algorithm, 2)

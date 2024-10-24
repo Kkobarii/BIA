@@ -4,6 +4,7 @@ from matplotlib.animation import FuncAnimation
 
 from algorithm.Algorithm import Algorithm
 from algorithm.BlindSearch import BlindSearch
+from algorithm.SimulatedAnnealing import SimulatedAnnealing
 from function.Function import Function
 
 INTERACTIVE = True
@@ -17,11 +18,11 @@ class Graph:
         self.points = None
 
     @staticmethod
-    def plot_function_3d(x, y, z, cmap='jet_r', alpha=0.8):
+    def plot_function_3d(x, y, z, color='jet_r', alpha=0.8):
         # Plot the results
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        ax.plot_surface(x, y, z, cmap=cmap, alpha=alpha)
+        ax.plot_surface(x, y, z, color=color, alpha=alpha)
 
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
@@ -82,7 +83,7 @@ class Graph:
         x, y, z = Graph.get_function_values(algorithm_instance.function)
 
         # Plot the function as grey gradient
-        Graph.plot_function_3d(x, y, z, cmap='Greys', alpha=0.3)
+        Graph.plot_function_3d(x, y, z, color='Grey', alpha=0.3)
 
         # Plot the algorithm path
         path = algorithm_instance.path
@@ -96,10 +97,10 @@ class Graph:
         plt.title(f'{algorithm_instance.function.get_name()} - {algorithm_instance.get_name()} Plot')
         plt.show()
 
-    def animate_algorithm(self, algorithm_instance: 'Algorithm'):
+    def animate_algorithm(self, algorithm_instance: 'Algorithm', length=5):
         x, y, z = Graph.get_function_values(algorithm_instance.function)
 
-        fig, ax = Graph.plot_function_3d(x, y, z, cmap='Greys', alpha=0.3)
+        fig, ax = Graph.plot_function_3d(x, y, z, color='Grey', alpha=0.3)
 
         plt.get_current_fig_manager().full_screen_toggle()
 
@@ -110,14 +111,28 @@ class Graph:
         self.points = []
 
         def update(frame):
+            if frame == len(path):
+                # if algorithm is SimmulatedAnnealing, find the lowest point in the path
+                if algorithm_instance.get_name() == 'SimulatedAnnealing':
+                    best = algorithm_instance.get_result()
+                    for point in path:
+                        if point[1][1] < best[1]:
+                            best = point[1]
+                    pt = Graph.plot_point(ax, best, 'blue')
+                    pt.set_sizes([1000])
+                    self.points.append(pt)
+
+                # plot the result
+                pt = Graph.plot_point(ax, algorithm_instance.get_result(), 'green')
+                pt.set_sizes([1000])
+                self.points.append(pt)
+
+                return
+
             current_point = path[frame]
 
             if frame == 0:
                 pt = Graph.plot_point(ax, current_point[1], 'red')
-                self.points.append(pt)
-            if frame == len(path) - 1:
-                pt = Graph.plot_point(ax, current_point[1], 'green')
-                pt.set_sizes([1000])
                 self.points.append(pt)
             elif current_point[0]:
                 # recolor all previous points
@@ -132,9 +147,8 @@ class Graph:
                 pt = Graph.plot_point(ax, current_point[1], 'black', 0.7)
                 self.points.append(pt)
 
-        # calculate interval so that the animation is 5 seconds long
-        interval = 5000 / len(path)
+        interval = length * 1000 / len(path)
 
-        ani = FuncAnimation(fig, update, frames=len(path), interval=interval, repeat=False)
+        ani = FuncAnimation(fig, update, frames=len(path) + 1, interval=interval, repeat=False)
         plt.title(f'{algorithm_instance.function.get_name()} - {algorithm_instance.get_name()} Plot')
         plt.show()

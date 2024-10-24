@@ -10,3 +10,6 @@ class Algorithm:
 
     def get_path(self):
         return None
+
+    def get_result(self):
+        return None

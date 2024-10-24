@@ -2,7 +2,7 @@ from algorithm.Algorithm import Algorithm
 
 
 class HillClimbing(Algorithm):
-    def __init__(self, generations, function, factor=0.1):
+    def __init__(self, generations, function, factor=0.01):
         super().__init__(function)
         self.generations = generations
         self.current_generation = 0
@@ -21,7 +21,7 @@ class HillClimbing(Algorithm):
         self.current_best = (current_point, current_cost)
         self.path.append((True, self.current_best))
 
-        print(f'\nStarting search for {self.function.__class__.__name__}')
+        print(f'\nStarting {self.get_name()} search for {self.function.__class__.__name__}')
         while self.current_generation < self.generations:
             self.step()
 
@@ -47,3 +47,6 @@ class HillClimbing(Algorithm):
 
     def get_path(self):
         return self.path
+
+    def get_result(self):
+        return self.current_best

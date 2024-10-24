@@ -21,7 +21,7 @@ class SimulatedAnnealing(Algorithm):
         self.current_best = (current_point, current_cost)
         self.path.append((True, self.current_best))
 
-        print(f'\nStarting search for {self.function.__class__.__name__}')
+        print(f'\nStarting {self.get_name()} search for {self.function.__class__.__name__}')
         while self.temperature > self.minimal_temperature:
             self.step()
 
@@ -31,7 +31,7 @@ class SimulatedAnnealing(Algorithm):
 
     def step(self):
         # get a random neighbour
-        new_point = self.function.random_normal_neighbour(self.current_best[0], 5)
+        new_point = self.function.random_normal_neighbour(self.current_best[0], 0.02)
         new_cost = self.function.evaluate(new_point)
 
         if new_cost < self.current_best[1]:
@@ -42,7 +42,7 @@ class SimulatedAnnealing(Algorithm):
             delta = new_cost - self.current_best[1]
             if self.acceptance_probability(delta, self.temperature) > r:
                 self.current_best = (new_point, new_cost)
-                self.path.append((False, self.current_best))
+                self.path.append((True, self.current_best))
 
         self.temperature = self.temperature * self.cooling_rate
         return self.current_best
@@ -57,3 +57,6 @@ class SimulatedAnnealing(Algorithm):
 
     def get_path(self):
         return self.path
+
+    def get_result(self):
+        return self.current_best

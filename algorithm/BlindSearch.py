@@ -19,7 +19,7 @@ class BlindSearch(Algorithm):
             print('Search already complete!')
             return self.current_best
 
-        print(f'\nStarting search for {self.function.__class__.__name__}')
+        print(f'\nStarting {self.get_name()} search for {self.function.__class__.__name__}')
         while self.current_generation < self.generations:
             self.step()
             # sleep(0.1)
@@ -50,3 +50,6 @@ class BlindSearch(Algorithm):
 
     def get_path(self):
         return self.path
+
+    def get_result(self):
+        return self.current_best

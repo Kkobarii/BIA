@@ -11,7 +11,7 @@ class Function:
         pass
 
     def grid(self, size: int):
-        x = np.linspace(self.specification.lower, self.specification.upper, 100)
+        x = np.linspace(self.specification.lower, self.specification.upper, size)
         return np.meshgrid(x, x)
 
     def random_population(self, size: int) -> np.ndarray:
@@ -25,8 +25,8 @@ class Function:
         return (np.random.normal(point, distance, (size, self.specification.dimension))
                 .clip(self.specification.lower, self.specification.upper))
 
-    def random_normal_neighbour(self, point: np.ndarray, percentage: int) -> np.ndarray:
-        distance = (self.specification.upper - self.specification.lower) * percentage / 100
+    def random_normal_neighbour(self, point: np.ndarray, percentage_num: int) -> np.ndarray:
+        distance = (self.specification.upper - self.specification.lower) * percentage_num
         return (np.random.normal(point, distance)
                 .clip(self.specification.lower, self.specification.upper))
 
